@@ -1,0 +1,24 @@
+﻿__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# virtual env
+.venv/
+env/
+venv/
+
+# VS Code
+.vscode/
+
+# data artifacts (keep placeholders)
+data/extracted/*
+data/processed/*
+data/outputs/*
+!data/extracted/.gitkeep
+!data/processed/.gitkeep
+!data/outputs/.gitkeep
+!data/reference-tables/.gitkeep
+
+.DS_Store
+Thumbs.db
