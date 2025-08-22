@@ -1,5 +1,5 @@
 """
-Main entrypoint for INST414 Final Project — Part 2.
+Main entrypoint for INST414 Final Project.
 """
 #importing functions from etl modules for execution
 from etl.extract import verify_inputs
