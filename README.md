@@ -97,11 +97,30 @@ R2, RMSE, MAE
 ```
 
 ## Visualization Samples
+To make sense of the regression outputs, I generated three plots. Below is what each visualization shows and how it connects back to the business problem of analyzing freight movement and its relationship with climate/weather patterns.
+
 - `viz_coefficients.png`→ shows standardized coefficients
+<img width="1600" height="800" alt="viz_coefficients" src="https://github.com/user-attachments/assets/7b868602-969f-4ec5-a48e-1988a6f6e76a" />
+
+- This bar chart shows the standardized regression coefficients for each predictor variable.  
+- The height and sign (positive/negative) of each bar tell us how strongly that variable contributes to predicting freight activity (measured in tons/value). Positive coefficients mean that as the predictor increases, freight also tends to increase. Negative coefficients mean the opposite.
+- This helps identify which factors, such as precipitation totals, average temperature, or extreme weather events (hot days, heavy rain days), have the strongest relationship with freight outcomes. Even if the overall R² is modest, this gives a directional signal about which climate factors might matter most for planning.
 
 - `viz_residuals.png` → residual errors across predictions
+<img width="1600" height="1200" alt="viz_residuals" src="https://github.com/user-attachments/assets/4d586d0a-26c3-4d33-a34d-6eeb2bb6d315" />
+
+- This scatter plot shows residuals (errors) vs. predicted values. Each point represents a state–year observation.  
+- The vertical position shows how far off the model’s prediction was from the actual outcome. Ideally, residuals should be scattered randomly around zero; if patterns appear, it means the model is missing some structure in the data.  
+- This helps evaluate whether the regression model is systematically underpredicting/overpredicting freight activity for certain ranges. It tells us about the limitations of the model and whether additional features or different modeling strategies might be needed.
+
 
 - `viz_actual_vs_predicted.png` → model fit comparison
+<img width="1600" height="1200" alt="viz_actual_vs_predicted" src="https://github.com/user-attachments/assets/9e177454-367c-486a-a14a-8f40c0490fda" />
+
+- This plot compares the **true freight values** (on the x-axis) with the model’s predictions (on the y-axis). The 45 degree diagonal line represents “perfect predictions.” Points close to the line indicate accurate predictions. Points far from the line show where the model struggled.  
+- This visualization directly shows the predictive accuracy of the model. It could give stakeholders an intuitive way to see how well the model aligns with reality; whether predictions are generally on target, or whether there are large discrepancies for certain states or years.
+
+Even with modest performance (R² ~ 0.12), these visuals demonstrate how data science can start to quantify the relationship between freight activity and environmental conditions, and they point toward areas for future refinement.
 
 ## Notes
 - Python 3.12 was used to ensure compatibility with numpy/matplotlib.
