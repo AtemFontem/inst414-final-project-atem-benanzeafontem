@@ -83,11 +83,11 @@ python analysis/model.py
 ```
 python vis/visualizations.py
 ```
-- Trains a regression model.
-    - Produces plots in `data/outputs/`:
-        - Coefficient Plot
-        - Residuals Plot
-        - Actual vs Predicted
+
+- Produces plots in `data/outputs/`:
+    - Coefficient Plot
+    - Residuals Plot
+    - Actual vs Predicted
 
 ## Example Outputs
 ### Metrics (`metrics_regression.csv`)
@@ -103,7 +103,6 @@ R2, RMSE, MAE
 
 - `viz_actual_vs_predicted.png` → model fit comparison
 
-- 
 ## Notes
 - Python 3.12 was used to ensure compatibility with numpy/matplotlib.
 

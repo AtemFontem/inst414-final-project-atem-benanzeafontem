@@ -38,6 +38,10 @@ def _ensure_dir(path: str) -> None:
 
 
 def plot_coefficients(coefs: pd.DataFrame, out_path: str, top_k: int = 20) -> None:
+    if coefs.empty or "feature" not in coefs or "coef_standardized" not in coefs:
+        print("[VIZ][WARN] Coefficients dataframe empty or missing columns; skipping coefficients plot.")
+        return
+
     c = coefs.copy()
     c["abs_coef"] = c["coef_standardized"].abs()
     c = c.sort_values("abs_coef", ascending=True).tail(top_k)
@@ -52,6 +56,17 @@ def plot_coefficients(coefs: pd.DataFrame, out_path: str, top_k: int = 20) -> No
 
 
 def plot_residuals(preds: pd.DataFrame, out_path: str) -> None:
+    if preds.empty:
+        print("[VIZ][WARN] Predictions dataframe is empty; skipping residuals plot.")
+        return
+    if "y_true" not in preds or "y_pred" not in preds:
+        print("[VIZ][WARN] Missing y_true/y_pred; skipping residuals plot.")
+        return
+
+    # Compute residuals if missing (or overwrite just to be safe/consistent)
+    preds = preds.copy()
+    preds["residual"] = preds["y_true"] - preds["y_pred"]
+
     plt.figure(figsize=(8, 6))
     plt.hist(preds["residual"], bins=20)
     plt.title("Residuals (y_true - y_pred)")
@@ -63,10 +78,20 @@ def plot_residuals(preds: pd.DataFrame, out_path: str) -> None:
 
 
 def plot_actual_vs_pred(preds: pd.DataFrame, out_path: str) -> None:
-    x = preds["y_true"].values
-    y = preds["y_pred"].values
-    lim_min = min(np.min(x), np.min(y))
-    lim_max = max(np.max(x), np.max(y))
+    if preds.empty:
+        print("[VIZ][WARN] Predictions dataframe is empty; skipping actual-vs-predicted plot.")
+        return
+    if "y_true" not in preds or "y_pred" not in preds:
+        print("[VIZ][WARN] Missing y_true/y_pred; skipping actual-vs-predicted plot.")
+        return
+
+    x = preds["y_true"].to_numpy()
+    y = preds["y_pred"].to_numpy()
+    lim_min = float(min(np.min(x), np.min(y)))
+    lim_max = float(max(np.max(x), np.max(y)))
+    if np.isnan(lim_min) or np.isnan(lim_max) or lim_min == lim_max:
+        print("[VIZ][WARN] Degenerate limits for actual-vs-predicted; skipping plot.")
+        return
 
     plt.figure(figsize=(7.5, 7))
     plt.scatter(x, y, alpha=0.7)
@@ -98,10 +123,10 @@ def main() -> None:
     plot_residuals(preds, p2)
     plot_actual_vs_pred(preds, p3)
 
-    print("[VIZ] Saved visuals to vis/outputs")
-    print(f"  - {os.path.relpath(p1)}")
-    print(f"  - {os.path.relpath(p2)}")
-    print(f"  - {os.path.relpath(p3)}")
+    print("[VIZ] Saved visuals to vis/outputs (where generated)")
+    for p in [p1, p2, p3]:
+        if os.path.exists(p):
+            print(f"  - {os.path.relpath(p)}")
 
 
 if __name__ == "__main__":

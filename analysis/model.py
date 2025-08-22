@@ -28,11 +28,11 @@ from sklearn.metrics import mean_absolute_error, r2_score, mean_squared_error
 INPUT_CSV = os.path.join("data", "processed", "model_ready_state_year.csv")
 OUT_DIR   = os.path.join("analysis", "outputs")
 
-# Train/test split (same as before)
+# Train/test split 
 TRAIN_YEARS = [2018, 2019, 2020, 2021, 2022]
 TEST_YEAR   = 2023
 
-# Target (same as before in your runs)
+# Target (currently predicting VALUE)
 TARGET_COL = "value_out"
 
 
@@ -42,8 +42,7 @@ def _ensure_dir(path: str) -> None:
 
 def _feature_list(df: pd.DataFrame) -> list[str]:
     """
-    Use the same schema/column names you had previously.
-    Exclude IDs, flags, target, and derived text columns.
+    Select numeric features and drop IDs/flags/target.
     """
     drop_cols = {
         "state_fips", "state_abbr", "year",
@@ -59,11 +58,9 @@ def train(df: pd.DataFrame) -> dict:
     Fit standardized linear regression and return artifacts:
     metrics, coefficients, predictions, features.
     """
-    # keep the years used earlier
     df_use = df[df["year"].isin(TRAIN_YEARS + [TEST_YEAR])].copy()
     df_use = df_use[~df_use[TARGET_COL].isna()].copy()
 
-    # keys to keep in predictions
     keys = [c for c in ["state_fips", "state_abbr", "year"] if c in df_use.columns]
 
     features = _feature_list(df_use)
@@ -132,7 +129,6 @@ def save_outputs(artifacts: dict) -> None:
         os.path.join(OUT_DIR, "predictions_regression.csv"),
         index=False
     )
-
 
     m = artifacts["metrics"]
     print("[MODEL] Saved artifacts to analysis/outputs")
