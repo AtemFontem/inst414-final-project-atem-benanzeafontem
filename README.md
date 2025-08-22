@@ -79,12 +79,12 @@ python analysis/model.py
     - `coefficients_regression.csv`        
     - `predictions_regression.csv`
 
-##### #Step 3 – Generate Visualizations
+###### Step 3 – Generate Visualizations
 ```
 python vis/visualizations.py
 ```
 - Trains a regression model.
-    - Produces plots in data/outputs/:
+    - Produces plots in `data/outputs/`:
         - Coefficient Plot
         - Residuals Plot
         - Actual vs Predicted
@@ -114,5 +114,7 @@ R2, RMSE, MAE
 
 ## Author
 Atem Benanzea-Fontem
+
 INST414 – University of Maryland
+
 Summer II 2025
