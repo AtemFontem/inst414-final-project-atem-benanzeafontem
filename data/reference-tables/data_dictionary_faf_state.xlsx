@@ -1,0 +1,14 @@
+Dataset,Column Name,Type,Unit,Allowed Values,Description,Source,Lineage / Derivation,Null Handling
+FAF5.7.1_State,fr_orig,string,NA,2-digit FIPS-like,"Origin state code (legacy FR field; may be empty in this file)",US DOT FAF 5.7.1 (State flows),Used only if populated; primary origin codes taken from dms_origst,Leave as null if empty
+FAF5.7.1_State,dms_origst,int,NA,01–56,"Origin state FIPS (DMS coding)",US DOT FAF 5.7.1 (State flows),Primary origin state used to build state-year outbound totals,Drop rows where missing (ETL filters)
+FAF5.7.1_State,dms_destst,int,NA,01–56,"Destination state FIPS (DMS coding)",US DOT FAF 5.7.1 (State flows),Primary destination state used to build state-year inbound totals,Drop rows where missing (ETL filters)
+FAF5.7.1_State,fr_dest,string,NA,2-digit FIPS-like,"Destination state code (legacy FR field; may be empty)",US DOT FAF 5.7.1 (State flows),Not used if dms_destst present,Leave as null if empty
+FAF5.7.1_State,fr_inmode,string,NA,categorical,"Inbound mode (legacy; often blank in this file)",US DOT FAF 5.7.1 (State flows),Not used for aggregation,Leave as null
+FAF5.7.1_State,dms_mode,int,NA,categorical,"Mode code (DMS coding)",US DOT FAF 5.7.1 (State flows),Not used for state totals in this project,Leave as is
+FAF5.7.1_State,fr_outmode,string,NA,categorical,"Outbound mode (legacy)",US DOT FAF 5.7.1 (State flows),Not used,Leave as is
+FAF5.7.1_State,sctg2,int,NA,01–43,"Commodity class (SCTG-2 digit)",US DOT FAF 5.7.1 (State flows),Not used for totals here (we aggregate across all commodities),Leave as is
+FAF5.7.1_State,trade_type,int,NA,1=Domestic; 2=Import; 3=Export,"Trade type code",US DOT FAF 5.7.1 (State flows),Not filtered in this project; totals include all,Leave as is
+FAF5.7.1_State,dist_band,int,miles,Ordinal bins,"Distance band category",US DOT FAF 5.7.1 (State flows),Not used,Leave as is
+FAF5.7.1_State,tons_YYYY,float,short tons,>=0,"Shipment weight by year (state↔state)",US DOT FAF 5.7.1 (State flows),Summed to state-year outbound/inbound (groupby origin/destination),Treat missing as 0 for sums
+FAF5.7.1_State,value_YYYY,float,USD (millions),>=0,"Shipment value by year (state↔state)",US DOT FAF 5.7.1 (State flows),Summed to state-year outbound/inbound,Missing as 0 for sums
+FAF5.7.1_State,tmiles_YYYY,float,ton-miles,>=0,"Ton-miles by year (state↔state)",US DOT FAF 5.7.1 (State flows),Summed to state-year outbound/inbound,Missing as 0 for sums

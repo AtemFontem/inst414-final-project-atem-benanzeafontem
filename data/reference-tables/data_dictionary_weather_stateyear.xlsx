@@ -1,0 +1,15 @@
+Dataset,Column Name,Type,Unit,Allowed Values,Description,Source,Lineage / Derivation,Null Handling
+NOAA_state_year,state_fips,int,NA,01–56,"State FIPS",NOAA (derived from county-to-state),Computed when aggregating counties→state,Required
+NOAA_state_year,state_abbr,string,NA,USPS 2-letter,"State abbreviation",NOAA/Reference table,From state crosswalk,Required
+NOAA_state_year,year,int,year,2018–2024,"Calendar year",Derivation,From daily dates during aggregation,Required
+NOAA_state_year,prcp_total_mm,float,mm,>=0,"Total annual precipitation (sum of daily)",NOAA NClimGrid (county daily),Sum(prcp_mm) across the year and counties weighted to state,Missing→flag in missing_weather
+NOAA_state_year,prcp_mean_mm,float,mm,>=0,"Average daily precipitation",NOAA NClimGrid (county daily),Mean(prcp_mm) across days,See missing_weather
+NOAA_state_year,prcp95_mm,float,mm,>=0,"95th percentile daily precipitation (extremes)",NOAA NClimGrid (county daily),Quantile(prcp_mm, 0.95),See missing_weather
+NOAA_state_year,tavg_mean_c,float,°C,any,"Mean daily temperature",NOAA NClimGrid (county daily),Mean(tavg_c),See missing_weather
+NOAA_state_year,tavg_std_c,float,°C,>=0,"Std. dev. of daily temperature",NOAA NClimGrid (county daily),Std(tavg_c),See missing_weather
+NOAA_state_year,hot_days,int,days,>=0,"Days with tavg_c ≥ 30°C",NOAA NClimGrid (county daily),Count(tavg_c >= 30),See missing_weather
+NOAA_state_year,cold_days,int,days,>=0,"Days with tavg_c ≤ 0°C",NOAA NClimGrid (county daily),Count(tavg_c <= 0),See missing_weather
+NOAA_state_year,heavy_rain_days,int,days,>=0,"Days with prcp_mm ≥ 25 mm",NOAA NClimGrid (county daily),Count(prcp_mm >= 25),See missing_weather
+NOAA_state_year,very_heavy_rain_days,int,days,>=0,"Days with prcp_mm ≥ 50 mm",NOAA NClimGrid (county daily),Count(prcp_mm >= 50),See missing_weather
+NOAA_state_year,n_days,int,days,0–366,"Number of daily records used",NOAA NClimGrid (county daily),Row count after filtering,Used to validate coverage
+NOAA_state_year,missing_weather,bool,NA,True/False,"True if coverage too low or merge failed",ETL Transform,Set True if n_days < threshold or join failed,True→exclude in modeling

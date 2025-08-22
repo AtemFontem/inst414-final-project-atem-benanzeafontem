@@ -1,0 +1,21 @@
+Dataset,Column Name,Type,Unit,Allowed Values,Description,Source,Lineage / Derivation,Null Handling
+ModelReady,state_fips,int,NA,01–56,"State FIPS",Join key,From FAF/Reference,Required
+ModelReady,state_abbr,string,NA,USPS 2-letter,"State abbreviation",Join key,From reference crosswalk,Required
+ModelReady,year,int,year,2018–2024,"Calendar year",Join key,From FAF/NOAA after aggregation,Required
+ModelReady,tons_out,float,short tons,>=0,"Total outbound tons from state in year",FAF 5 (State flows),Sum of tons_YYYY by origin state,Missing→0 during build
+ModelReady,value_out,float,USD (millions),>=0,"Total outbound value",FAF 5 (State flows),Sum of value_YYYY by origin state,Missing→0 during build
+ModelReady,tmiles_out,float,ton-miles,>=0,"Total outbound ton-miles",FAF 5 (State flows),Sum of tmiles_YYYY by origin state,Missing→0 during build
+ModelReady,tons_in,float,short tons,>=0,"Total inbound tons to state",FAF 5 (State flows),Sum of tons_YYYY by destination state,Missing→0 during build
+ModelReady,value_in,float,USD (millions),>=0,"Total inbound value",FAF 5 (State flows),Sum of value_YYYY by destination state,Missing→0 during build
+ModelReady,tmiles_in,float,ton-miles,>=0,"Total inbound ton-miles",FAF 5 (State flows),Sum of tmiles_YYYY by destination state,Missing→0 during build
+ModelReady,prcp_total_mm,float,mm,>=0,"Annual precipitation (total)",NOAA state-year,From NOAA_state_year.prcp_total_mm,If missing_weather=True→NaN
+ModelReady,prcp_mean_mm,float,mm,>=0,"Average daily precipitation",NOAA state-year,From NOAA_state_year.prcp_mean_mm,If missing_weather=True→NaN
+ModelReady,prcp95_mm,float,mm,>=0,"95th percentile daily precipitation",NOAA state-year,From NOAA_state_year.prcp95_mm,If missing_weather=True→NaN
+ModelReady,tavg_mean_c,float,°C,any,"Mean daily temperature",NOAA state-year,From NOAA_state_year.tavg_mean_c,If missing_weather=True→NaN
+ModelReady,tavg_std_c,float,°C,>=0,"Std. dev. of daily temperature",NOAA state-year,From NOAA_state_year.tavg_std_c,If missing_weather=True→NaN
+ModelReady,hot_days,int,days,>=0,"Days with tavg_c ≥ 30°C",NOAA state-year,From NOAA_state_year.hot_days,If missing_weather=True→NaN
+ModelReady,cold_days,int,days,>=0,"Days with tavg_c ≤ 0°C",NOAA state-year,From NOAA_state_year.cold_days,If missing_weather=True→NaN
+ModelReady,heavy_rain_days,int,days,>=0,"Days with prcp_mm ≥ 25 mm",NOAA state-year,From NOAA_state_year.heavy_rain_days,If missing_weather=True→NaN
+ModelReady,very_heavy_rain_days,int,days,>=0,"Days with prcp_mm ≥ 50 mm",NOAA state-year,From NOAA_state_year.very_heavy_rain_days,If missing_weather=True→NaN
+ModelReady,n_days,int,days,0–366,"Number of daily weather records used",NOAA state-year,From NOAA_state_year.n_days,Used as QA
+ModelReady,missing_weather,bool,NA,True/False,"True if weather coverage insufficient",NOAA/Transform,Set during transform,Filter True rows before modeling
