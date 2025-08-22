@@ -13,7 +13,6 @@ The goal is to:
 
 ## Structure
 ```
-.
 ├── data/
 │   ├── raw/           # Original CSVs (FAF, NOAA weather)
 │   ├── processed/     # Cleaned/model-ready datasets
@@ -35,55 +34,74 @@ The goal is to:
 ```
 ## Setup Instructions
 
-### Create venv (Python 3.12 recommended)
+#### Create venv (Python 3.12 recommended)
+```
 python -m venv .venv
+```
 
-### Activate on Windows (PowerShell)
+
+#### Activate on Windows (PowerShell)
+```
 .venv\Scripts\activate
+```
 
-### Activate on macOS/Linux
+
+#### Activate on macOS/Linux
+```
 source .venv/bin/activate
+```
 
-### Install dependencies
+
+#### Install dependencies
+```
 pip install -r requirements.txt
+```
+#### Run Pipeline
 
-### Run pipeline
-#### Step 1 - Transform Data
+###### Step 1 - Transform Data
+```
 python etl/transform.py
+```
+- This cleans and merges freight + weather data.
+- Produces: 
+    `data/processed/model_ready_state_year.csv`
+    (raw data originates from `FAF5.7.1_State.csv` & 
+    `weather_us_county_2018_2023.csv` [weather dataset webscraped from NOAA website])
 
-    This cleans and merges freight + weather data.
-    Produces: 
-    - data/processed/model_ready_state_year.csv
-    (raw data originates from FAF5.7.1_State.csv & 
-    weather_us_county_2018_2023.csv [weather dataset webscraped from NOAA website])
-
-##### Step 2 – Run Model
+###### Step 2 – Run Model
+```
 python analysis/model.py
-    Trains a regression model.
-    Outputs:
-        - metrics_regression.csv
-        - coefficients_regression.csv
-        - predictions_regression.csv
+```
+- Trains a regression model.
 
-#### Step 3 – Generate Visualizations
+- Outputs:
+    - `metrics_regression.csv`
+    - `coefficients_regression.csv`        
+    - `predictions_regression.csv`
+
+##### #Step 3 – Generate Visualizations
+```
 python vis/visualizations.py
-    Trains a regression model.
-    Produces plots in data/outputs/:
-        - Coefficient plot
-        - Residuals plot
+```
+- Trains a regression model.
+    - Produces plots in data/outputs/:
+        - Coefficient Plot
+        - Residuals Plot
         - Actual vs Predicted
 
 ## Example Outputs
-### Metrics (metrics_regression.csv)
+### Metrics (`metrics_regression.csv`)
+```
 R2, RMSE, MAE
 0.116, 450893.40, 273031.42
+```
 
-### Visualization Samples
-- viz_coefficients.png → shows standardized coefficients
+## Visualization Samples
+- `viz_coefficients.png`→ shows standardized coefficients
 
-- viz_residuals.png → residual errors across predictions
+- `viz_residuals.png` → residual errors across predictions
 
-- viz_actual_vs_predicted.png → model fit comparison
+- `viz_actual_vs_predicted.png` → model fit comparison
 
 ## Notes
 - Python 3.12 was used to ensure compatibility with numpy/matplotlib.
@@ -92,7 +110,7 @@ R2, RMSE, MAE
     - Freight Analysis Framework (FAF)
     - NOAA Weather Data
 
-- This pipeline is modular — ETL, modeling, and visualization can be run independently.
+- This pipeline is modular; ETL, modeling, and visualization can be run independently
 
 ## Author
 Atem Benanzea-Fontem
