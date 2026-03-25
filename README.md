@@ -1,4 +1,4 @@
-# Weather and Freight Flows: INST414 Final Project
+# Weather and Freight Flows
 
 ## Project Overview
 This project investigates how weather patterns influence freight flows across U.S. states. Using data from the Freight Analysis Framework (FAF) and NOAA weather summaries, we construct a regression model to evaluate whether climate and precipitation trends can explain variation in freight value.
